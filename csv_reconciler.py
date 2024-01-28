@@ -16,8 +16,8 @@ def run(source_path: str, target_path: str,output_path: str,compare_cols:List[st
     ensure_path_exists(source_path)
     ensure_path_exists(target_path)
 
-    source_df = pd.read_csv(source_path,header=0)
-    target_df = pd.read_csv(target_path,header=0)
+    source_df = pd.read_csv(source_path,header=0,dtype={0:str})
+    target_df = pd.read_csv(target_path,header=0,dtype={0:str})
 
     source_cols = source_df.columns
     if compare_cols and not all([ col in source_cols for col in compare_cols]):
@@ -37,6 +37,7 @@ def run(source_path: str, target_path: str,output_path: str,compare_cols:List[st
                 raise Exception(f"Unsupported data type {dataType} on transformer {col}:{dataType}. Allowed values are str and date")
         
     missing_in_target, missing_in_source = reconciler.missing_records(source_df,target_df)
+    print(missing_in_target)
     # call with None if empty
     compare_columns = compare_cols if compare_cols else None
     col_transformers = col_transformers if col_transformers else None
@@ -44,11 +45,11 @@ def run(source_path: str, target_path: str,output_path: str,compare_cols:List[st
     discrepancies = reconciler.find_discrepancies(source_df,target_df,compare_columns,col_transformers)
     with open(output_path, 'w', newline='') as out_file:
         out_file.write("\n*************Missing in Target********************\n")
-        missing_in_target.reset_index(drop=True).to_csv(out_file,mode='a',index=False)
+        missing_in_target.to_csv(out_file,mode='a',index=True)
         out_file.write("\n\n*************Missing in Source ********************\n")
-        missing_in_source.reset_index(drop=True).to_csv(out_file,mode='a',index=False)
+        missing_in_source.to_csv(out_file,mode='a',index=True)
         out_file.write("\n\n*************Field Discrepancy ********************\n")
-        discrepancies.reset_index(drop=True).to_csv(out_file,mode='a',index=False)
+        discrepancies.to_csv(out_file,mode='a',index=True)
     print("Reconciliation completed:")
     print("Records missing in target: ",len(missing_in_target))
     print("Records missing in source",len(missing_in_source))
