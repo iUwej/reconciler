@@ -37,7 +37,6 @@ def run(source_path: str, target_path: str,output_path: str,compare_cols:List[st
                 raise Exception(f"Unsupported data type {dataType} on transformer {col}:{dataType}. Allowed values are str and date")
         
     missing_in_target, missing_in_source = reconciler.missing_records(source_df,target_df)
-    print(missing_in_target)
     # call with None if empty
     compare_columns = compare_cols if compare_cols else None
     col_transformers = col_transformers if col_transformers else None
