@@ -33,5 +33,8 @@
                             A list of columns and their data types in the form COLUMN_NAME:type     COLUMN_NAME1:type to apply the default trasformations for that type. For example to make all dates in a
                             column standard yyyy-mm-dd(2023-01-23) you would supply COLUMN_NAME:date. To make a string value standard by removing extra spaces between words, trimming ends and using
                             same case(lower case) , supply COLUMN_NAME:str Supported types for this option are date and str but this range can be extended by implementing the necessary transformers
-                            for the desired type.
-    ```
+                            for the desired type.```
+
+    ### Running Tests
+    To run the unit tests, run the following command  on th project's root<br>
+    `pytest`
